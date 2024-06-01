@@ -1,32 +1,31 @@
-# Device implementation
-# Methods:
-#   Initialization, Shutdown, Command Transmission, Command Respone reception
-# Modes:
-#   QUICK, FULL
-
 from driver import Driver
+import messages
 
 class Device:
-    def __init__(self, id, protocol, driver: Driver):
-        self.id = id
-        self.protocol = protocol
-        self.driver = driver
-        self.mode = 0
+    """
+    Base class for a generic device. Inherit from this class when  
+    implementing a new device.
+    """
 
+    def __init__(self, driver: Driver, d_address):
+        self._driver = driver
+        self._d_address = d_address
+
+        self._last_command = None
+        self.mode = messages.MODE_OFF
+
+        self.debug = False
+
+        self._driver.connect()
 
     def shutdown(self):
-        print("Shutdown")
+        self._driver.disconnect()
 
-    def com_transmit(self):
-        print("Command Transmission")
+    def command_transmit(self, command):
+        self.mode = command
+        self._driver.transmit(command)
 
-        # Receive a command and enter execution mode
+    def command_response(self):
+        reply = self.driver.receive()
+        return reply
 
-    def com_response(self):
-        print("Command Response")
-
-        # Return response to driver
-
-
-
-    
