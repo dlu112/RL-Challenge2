@@ -31,6 +31,14 @@ class Driver:
         if self.debug: print("Driver: Disconnecting")
         self._connected = False
 
+    def _read(self):
+        """Template function for reading from a bus"""
+        return
+    
+    def _write(self):
+        """Template function for writing to a bus"""
+        return
+
     def transmit(self, message):
         """Transmit a message to a device.
         

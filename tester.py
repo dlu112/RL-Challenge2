@@ -26,7 +26,7 @@ class Tester():
         self._test_result = False
         self._command = None
 
-    def validate_result(self):
+    def _validate_result(self):
         """Output test results to console."""
 
         if self.test_result:
@@ -53,7 +53,7 @@ class Tester():
         self._test_device.command_transmit(self._test_mode)
         self.test_result = (self._test_device.command_response() == self._test_mode)
         
-        self.validate_result()
+        self._validate_result()
 
 
 def sample_test_sequence():
