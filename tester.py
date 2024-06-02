@@ -35,7 +35,7 @@ class Tester():
             print("Tester: {} TEST FAIL".format(self._test_mode))
 
     def test_device(self, test_mode):
-        """Run supported test proceudres and validate the result.
+        """Run supported test procedures and validate the result.
         
         Args:
             test_mode (str): test_mode as selected from supported modes in messages.py.

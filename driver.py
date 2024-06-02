@@ -39,14 +39,17 @@ class Driver:
         """Template function for writing to a bus"""
         return
 
-    def transmit(self, message):
+    def transmit(self, message, d_address):
         """Transmit a message to a device.
         
         Args:
             message (str): Message to send to device.
         """
 
-        if self.debug: print("Driver: Transmitting message: {}".format(message))
+        if self.debug: 
+            print("Driver: Transmitting message: {}".format(message))
+            print("Driver: Target address is {}".format(d_address))
+
 
         # Check if connected before transmitting
         if self._connected:
@@ -60,6 +63,7 @@ class Driver:
         if self.debug: print("Driver: Receiving message")
 
         if self._connected:
+            # Sample return message for testing purposes
             return self._last_message
         else:
             if self.debug: print("DRIVER ERROR: Not connected")

@@ -51,7 +51,7 @@ class Device:
         """
 
         if self.debug: print("Device: Transmitting command {}".format(command))
-        self._driver.transmit(command)
+        self._driver.transmit(command, self._d_address)
 
     def command_response(self):
         """Receive a message via the driver.
