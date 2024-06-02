@@ -1,24 +1,61 @@
 class Driver:
-    """
-    Base class for a generic driver. Inherit from this class when 
+    """Base class for a generic driver. Inherit from this class when 
     implementing a new driver.
+
+    Attributes:
+        debug (bool): Whether to output debug messages to console.
     """
 
-    def __init__(self):
-        self.debug = False
-        if self.debug: print("Initializing driver")
+    def __init__(self, debug=False):
+        """Initialize driver.
+        
+        Args:
+            debug (bool): Whether to output debug messages, default False.
+        """
+
+        if debug: print("Driver: Initializing")
+        self.debug = debug
+
+        self._last_message = None
+        self._connected = False
 
     def connect(self):
-        if self.debug: print("Connecting")
+        """Connect to a device."""
+
+        if self.debug: print("Driver: Connecting")
+        self._connected = True
 
     def disconnect(self):
-        if self.debug: print("Disconnecting")
+        """Disconnect from a device."""
+
+        if self.debug: print("Driver: Disconnecting")
+        self._connected = False
 
     def transmit(self, message):
-        if self.debug: print("Transmitting message: {}".format(message))
+        """Transmit a message to a device.
+        
+        Args:
+            message (str): Message to send to device.
+        """
+
+        if self.debug: print("Driver: Transmitting message: {}".format(message))
+
+        # Check if connected before transmitting
+        if self._connected:
+            self._last_message = message
+        else:
+            if self.debug: print("DRIVER ERROR: Not connected")
 
     def receive(self):
-        if self.debug: print("Receiving message")
+        """Receive a message from a device."""
+
+        if self.debug: print("Driver: Receiving message")
+
+        if self._connected:
+            return self._last_message
+        else:
+            if self.debug: print("DRIVER ERROR: Not connected")
+        
 
 
 
