@@ -1,28 +1,27 @@
+import logging
 from driver import Driver
 from device import Device
 import test_modes
+
+logger = logging.getLogger(__name__)
 
 class Tester():
     """Test system for supported hardware devices and protocols.
     
     Attributes:
         _test_device (Device): Device being tested.
-        debug (bool): Whether to output debug messages to console.
         _test_Result (bool): Result of most recent test.
         _command (str): Most recent test mode.
     """
 
-    def __init__(self, device: Device, debug = False):
+    def __init__(self, device: Device):
         """Initialize tester.
         
         Args:
             device (Device): Device being tested.
-            debug (bool): Whether to output debug messages, default False.
         """
 
         self._test_device = device
-        self.debug = debug
-
         self._test_result = False
         self._command = None
 
@@ -41,11 +40,11 @@ class Tester():
             test_mode (str): test_mode as selected from supported modes in messages.py.
         """
         
-        if self.debug: print("Tester: Test mode {}".format(test_mode))
+        logger.info("Test mode {}".format(test_mode))
         
         # Check if mode is valid
         if test_mode not in test_modes.MODES:
-            if self.debug: print("ERROR: Test mode not recognized!")
+            logger.error("Test mode not recognized!")
             return
         
         # Transmit and receive test results
@@ -59,18 +58,15 @@ class Tester():
 def sample_test_sequence():
     """A quick example of how to use the tester."""
 
-    # Set debug mode
-    debug = True
-
     # Initialize driver and device address
-    test_driver = Driver(debug)
+    test_driver = Driver()
     test_address = 0
 
     # Initialize device, note that device is automatically connected
-    test_device = Device(test_address, test_driver, debug)
+    test_device = Device(test_address, test_driver)
     
     # Initialize tester
-    tester = Tester(test_device, debug)   
+    tester = Tester(test_device)   
 
     # Run any test modes requested
     tester.test_device(test_modes.MODE_FULL)
@@ -80,5 +76,6 @@ def sample_test_sequence():
     test_device.shutdown()
  
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     sample_test_sequence()
 

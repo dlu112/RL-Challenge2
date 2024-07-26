@@ -1,4 +1,6 @@
+import logging
 from driver import Driver
+logger = logging.getLogger(__name__)
 
 class Device:
     """Base class for a generic device. Inherit from this class when  
@@ -7,22 +9,19 @@ class Device:
     Attributes:
         d_address (int): Address of device.
         driver (Driver): Driver for device protocol.
-        debug (bool): Whether to output debug messages to console.
         _last_command (str): Most recent command sent
     """
 
-    def __init__(self, d_address, driver : Driver, debug = False):
+    def __init__(self, d_address, driver : Driver):
         """Initialize device.
         
         Args:
             d_address (int): Address of device.
             driver (Driver): Driver for device protocol.
-            debug (bool): Whether to output debug messages, default False.
         """
 
-        if debug: print("Device: Initializing device")
+        logger.info("Initializing device")
 
-        self.debug = debug
         self._d_address = d_address
         self._driver = driver
 
@@ -34,13 +33,13 @@ class Device:
     def initialize(self):
         """Connect driver to device."""
 
-        if self.debug: print("Device: Connecting driver")
+        logger.info("Connecting driver")
         self._driver.connect()
 
     def shutdown(self):
         """Disconnect driver from device."""
 
-        if self.debug: print("Device: Shutting down")
+        logger.info("Shutting down")
         self._driver.disconnect()
 
     def command_transmit(self, command):
@@ -50,7 +49,7 @@ class Device:
             command (str): Command to send to device.
         """
 
-        if self.debug: print("Device: Transmitting command {}".format(command))
+        logger.info("Transmitting command {}".format(command))
         self._driver.transmit(command, self._d_address)
 
     def command_response(self):
@@ -61,7 +60,8 @@ class Device:
         """
 
         reply = self._driver.receive()
-        if self.debug: print("Device: receiving message {}".format(reply))
+        logger.info("Device: receiving message {}".format(reply))
+
         
         return reply
 

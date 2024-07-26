@@ -1,34 +1,26 @@
+import logging
+logger = logging.getLogger(__name__)
 class Driver:
     """Base class for a generic driver. Inherit from this class when 
     implementing a new driver.
-
-    Attributes:
-        debug (bool): Whether to output debug messages to console.
     """
 
-    def __init__(self, debug=False):
+    def __init__(self):
         """Initialize driver.
-        
-        Args:
-            debug (bool): Whether to output debug messages, default False.
         """
-
-        if debug: print("Driver: Initializing")
-        self.debug = debug
+        logger.info("Initializing")
 
         self._last_message = None
         self._connected = False
 
     def connect(self):
         """Connect to a device."""
-
-        if self.debug: print("Driver: Connecting")
+        logger.info("Connecting")
         self._connected = True
 
     def disconnect(self):
         """Disconnect from a device."""
-
-        if self.debug: print("Driver: Disconnecting")
+        logger.info("Disconnecting")
         self._connected = False
 
     def _read(self):
@@ -45,28 +37,25 @@ class Driver:
         Args:
             message (str): Message to send to device.
         """
-
-        if self.debug: 
-            print("Driver: Transmitting message: {}".format(message))
-            print("Driver: Target address is {}".format(d_address))
+        logger.info("Transmitting message: {}".format(message))
+        logger.info("Target address: {}".format(d_address))
 
 
         # Check if connected before transmitting
         if self._connected:
             self._last_message = message
         else:
-            if self.debug: print("DRIVER ERROR: Not connected")
+            logger.error("Not connected")
 
     def receive(self):
         """Receive a message from a device."""
-
-        if self.debug: print("Driver: Receiving message")
+        logger.info("Receiving message")
 
         if self._connected:
             # Sample return message for testing purposes
             return self._last_message
         else:
-            if self.debug: print("DRIVER ERROR: Not connected")
+            logger.error("Not connected")
         
 
 
